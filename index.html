@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Milano Relojería | El Arte del Tiempo</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@200;400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+--gold: #c5a059;
+--dark-gold: #8e6d31;
+--black: #050505;
+--zinc-900: #121212;
+}
+body {
+font-family: 'Montserrat', sans-serif;
+background-color: var(--black);
+color: #ffffff;
+overflow-x: hidden;
+}
+h1, h2, h3, serif {
+font-family: 'Playfair Display', serif;
+}
+.gold-gradient-text {
+background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+display: inline-block;
+}
+@keyframes revealUp {
+from { opacity: 0; transform: translateY(30px); }
+to { opacity: 1; transform: translateY(0); }
+}
+.animate-reveal {
+animation: revealUp 0.8s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+}
+.watch-card {
+background: linear-gradient(145deg, #161616, #0a0a0a);
+border: 1px solid rgba(197, 160, 89, 0.1);
+transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+position: relative;
+overflow: hidden;
+}
+.watch-card:hover {
+border-color: var(--gold);
+transform: translateY(-10px);
+box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+}
+.watch-card::before {
+content: "";
+position: absolute;
+top: 0;
+left: -100%;
+width: 100%;
+height: 100%;
+background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+transition: 0.5s;
+}
+.watch-card:hover::before {
+left: 100%;
+}
+.btn-luxury {
+position: relative;
+padding: 1rem 2.5rem;
+color: white;
+text-transform: uppercase;
+letter-spacing: 0.2em;
+font-size: 0.75rem;
+border: 1px solid var(--gold);
+background: transparent;
+overflow: hidden;
+transition: all 0.3s ease;
+display: inline-block;
+}
+.btn-luxury:hover {
+color: var(--black);
+background: var(--gold);
+box-shadow: 0 0 20px rgba(197, 160, 89, 0.4);
+}
+.nav-link {
+font-size: 0.65rem;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+color: #888;
+transition: color 0.3s ease;
+white-space: nowrap;
+}
+@media (min-width: 1280px) {
+.nav-link {
+font-size: 0.7rem;
+letter-spacing: 0.25em;
+}
+}
+.nav-link:hover {
+color: var(--gold);
+}
+.search-container {
+position: relative;
+max-width: 600px;
+margin: 0 auto 40px;
+}
+.search-input {
+width: 100%;
+background: rgba(255, 255, 255, 0.03);
+border: 1px solid rgba(197, 160, 89, 0.2);
+padding: 15px 25px;
+border-radius: 2px;
+color: white;
+font-size: 0.8rem;
+letter-spacing: 0.1em;
+transition: all 0.3s ease;
+outline: none;
+}
+.search-input:focus {
+border-color: var(--gold);
+background: rgba(255, 255, 255, 0.06);
+box-shadow: 0 0 15px rgba(197, 160, 89, 0.1);
+}
+.search-icon {
+position: absolute;
+right: 20px;
+top: 50%;
+transform: translateY(-50%);
+color: var(--gold);
+pointer-events: none;
+}
+::-webkit-scrollbar {
+width: 5px;
+height: 4px;
+}
+::-webkit-scrollbar-track {
+background: var(--black);
+}
+::-webkit-scrollbar-thumb {
+background: var(--gold);
+}
+.no-scrollbar::-webkit-scrollbar {
+display: none;
+}
+.no-scrollbar {
+-ms-overflow-style: none;
+scrollbar-width: none;
+}
+</style>
+</head>
+<body>
+
+<!-- FONDO OSCURO DETRÁS DEL MENÚ LATERAL -->
+<div id="menuOverlay" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300" onclick="toggleMenu(false)"></div>
+
+<!-- MENÚ LATERAL DESPLAZABLE -->
+<div id="sideMenu" class="fixed inset-y-0 right-0 w-80 bg-[#0b0b0b] border-l border-white/5 z-50 transform translate-x-full transition-transform duration-300 ease-in-out p-8 flex flex-col justify-between">
+    <div>
+        <div class="flex justify-between items-center mb-12">
+            <span class="text-[0.6rem] tracking-[0.4em] text-zinc-500 uppercase">Navegación</span>
+            <button onclick="toggleMenu(false)" class="text-zinc-400 hover:text-gold transition-colors text-xs tracking-widest uppercase flex items-center gap-1">
+                Cerrar ×
+            </button>
+        </div>
+        <nav class="flex flex-col space-y-6">
+            <!-- En móviles se ven todos por comodidad, en PC solo los secundarios -->
+            <span class="nav-link cursor-pointer md:hidden" onclick="navigateTo('home'); toggleMenu(false)">Inicio</span>
+            <span class="nav-link cursor-pointer md:hidden" onclick="navigateTo('catalog'); toggleMenu(false)">Colección</span>
+            
+            <span class="nav-link cursor-pointer block text-sm" onclick="navigateTo('warranty'); toggleMenu(false)">Garantía</span>
+            <span class="nav-link cursor-pointer block text-sm" onclick="navigateTo('service'); toggleMenu(false)">Mantenimiento y Reparación</span>
+            <span class="nav-link cursor-pointer block text-sm" onclick="navigateTo('sell'); toggleMenu(false)">Vender mi Reloj</span>
+            <span class="nav-link cursor-pointer block text-sm" onclick="navigateTo('about'); toggleMenu(false)">Sobre Nosotros</span>
+            <span class="nav-link cursor-pointer block text-sm" onclick="navigateTo('contact'); toggleMenu(false)">Contacto</span>
+        </nav>
+    </div>
+    <div class="border-t border-white/5 pt-6 text-center">
+        <div class="serif text-xl gold-gradient-text tracking-widest">MILANO</div>
+        <p class="text-[0.5rem] text-zinc-600 tracking-widest uppercase mt-2">Excelencia Temporal</p>
+    </div>
+</div>
+
+<header class="fixed w-full z-40 bg-black/95 backdrop-blur-lg border-b border-white/5">
+    <div class="container mx-auto px-4 md:px-6 py-4 flex justify-between items-center">
+        <!-- LOGO -->
+        <div class="flex flex-col cursor-pointer shrink-0 items-start" onclick="navigateTo('home')">
+            <span class="text-2xl font-bold tracking-[0.3em] serif gold-gradient-text uppercase">Milano</span>
+            <span class="text-[0.6rem] tracking-[0.6em] text-zinc-500 uppercase -mt-1 ml-1">Relojería</span>
+        </div>
+        
+        <!-- MENÚ PRINCIPAL SUPERIOR (SOLO INICIO Y COLECCIÓN) -->
+        <div class="flex items-center space-x-6 md:space-x-10">
+            <nav class="hidden md:flex items-center space-x-8">
+                <span class="nav-link cursor-pointer" onclick="navigateTo('home')">Inicio</span>
+                <span class="nav-link cursor-pointer" onclick="navigateTo('catalog')">Colección</span>
+            </nav>
+            
+            <!-- BOTÓN PARA ABRIR EL MENÚ LATERAL -->
+            <button onclick="toggleMenu(true)" class="text-gold text-xs tracking-[0.25em] uppercase flex items-center gap-2 border border-gold/20 px-4 py-2 bg-zinc-900/30 hover:bg-gold hover:text-black transition-all duration-300">
+                <span>Menú</span>
+                <span class="text-xs">☰</span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<main id="content" class="min-h-screen pt-32 md:pt-24"></main>
+
+<footer class="bg-[#030303] pt-24 pb-12 border-t border-white/5">
+<div class="container mx-auto px-8 text-center">
+<div class="serif text-4xl gold-gradient-text mb-12">MILANO</div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16 text-left border-y border-white/5 py-12">
+<div>
+<h5 class="gold-text text-xs tracking-widest uppercase mb-6 font-semibold">Ubicacion</h5>
+<p class="text-zinc-500 text-sm leading-loose">Colon 2554</p>
+</div>
+<div>
+<h5 class="gold-text text-xs tracking-widest uppercase mb-6 font-semibold">Contacto</h5>
+<p class="text-zinc-500 text-sm leading-loose">3764-378004</p>
+</div>
+<div>
+<h5 class="gold-text text-xs tracking-widest uppercase mb-6 font-semibold">Servicios</h5>
+<div class="flex flex-col space-y-3">
+<span class="nav-link cursor-pointer text-xs uppercase tracking-widest" onclick="navigateTo('warranty')">Garantía</span>
+<span class="nav-link cursor-pointer text-xs uppercase tracking-widest" onclick="navigateTo('service')">Mantenimiento y Reparación</span>
+</div>
+</div>
+<div>
+<h5 class="gold-text text-xs tracking-widest uppercase mb-6 font-semibold">Negocios</h5>
+<span class="nav-link cursor-pointer text-xs uppercase tracking-widest" onclick="navigateTo('sell')">Vender mi Reloj</span>
+</div>
+</div>
+<div class="flex justify-center space-x-8 mb-12">
+<a href="https://www.instagram.com/milanorelojes7/" target="_blank" class="text-zinc-600 hover:text-gold transition-colors">INSTAGRAM</a>
+<a href="https://www.facebook.com/juan.milan.977802/" target="_blank" class="text-zinc-600 hover:text-gold transition-colors">FACEBOOK</a>
+<a href="https://www.tiktok.com/@juanmilano8?lang=es" target="_blank" class="text-zinc-600 hover:text-gold transition-colors">TIKTOK</a>
+</div>
+<p class="text-[0.6rem] text-zinc-700 tracking-[0.4em] uppercase">© 2026 Milano Relojería S.A. - Excelencia Temporal</p>
+</div>
+</footer>
+
+<script>
+const watches = [
+{
+id: 1,
+name: "MOVADO OLYMPIAN CHRONOGRAPH",
+collection: "Olympian",
+price: "850",
+description: "Un cronógrafo suizo de estética clásica y presencia refinada. El Movado Olympian combina una caja de acero inoxidable de 39 mm con esfera negra, brazalete metálico en tono plateado y cristal de zafiro resistente a rayaduras. Su movimiento de cuarzo ofrece precisión para el uso diario, mientras que sus funciones de fecha y cronógrafo aportan un carácter deportivo sin perder elegancia.",
+specs: { movimiento: "Cuarzo suizo", reserva: "Batería de cuarzo", caja: "Acero inoxidable", diametro: "39 mm", esfera: "Negra", cristal: "Zafiro resistente a rayaduras", brazalete: "Acero inoxidable tono plateado", resistencia: "30 m/100 pies", funciones: "Hora, minuto, segundo, fecha y cronógrafo", origen: "Swiss Made" },
+img: "Movado/4925043504203893696.jpg",
+video: "Movado/IMG_1216 (1).MOV",
+images: [
+"Movado/4925043504203893698.jpg",
+"Movado/4925043504203893697.jpg",
+"Movado/4925043504203893695.jpg",
+"Movado/4925043504203893694.jpg",
+"Movado/4925043504203893693.jpg"
+]
+},
+{
+id: 2,
+name: "Omega Automático Day-Date 1970",
+collection: "Omega Vintage",
+price: "1000",
+description: "Reloj Omega automático Day-Date circa 1970, una pieza vintage elegante con calibre 750, función de fecha rápida y movimiento de 17 joyas. Presenta caja chapada en oro sobre acero inoxidable, cristal acrílico original firmado, corona firmada y esfera con acabado original de fábrica.",
+specs: { año_aproximado: "1970", modelo: "Sin firmar", calibre: "1000", joyas: "17 joyas", movimiento: "Automático con función de fecha rápida", material_caja: "Chapado en oro sobre acero inoxidable", junta_caja: "Junta de goma Flat-Ring", cristal: "Cristal acrílico original firmado", corona: "Firmada", diametro_caja: "35.3 mm sin incluir corona", largo_caja: "41.3 mm de asa a asa", esfera: "Acabado original de fábrica", agujas: "Tipo índice originales en tono amarillo", correa: "Cuero genuino con textura tipo cocodrilo" },
+img: "Omega750/4994829429909425631.jpg",
+video: "Omega750/Omega Movimiento.mp4",
+images: [
+"Omega750/4994829429909425628.jpg",
+"Omega750/4994829429909425629.jpg",
+"Omega750/4994829429909425630.jpg",
+"Omega750/4994829429909425627.jpg"
+]
+},
+{
+id: 3,
+name: "Citizen Automático Day-Date",
+collection: "Citizen Vintage",
+price: "250",
+description: "Reloj Citizen automático vintage modelo 61-0691 con calibre 6501, esfera verde y función de día y fecha. Una pieza clásica de estilo setentero, con caja tipo cushion, brazalete metálico integrado y calendario visible en español.",
+specs: { marca: "Citizen", modelo: "61-0691", calibre: "6501", movimiento: "Automático", funciones: "Día y fecha", esfera: "Verde", calendario: "Día y fecha con indicador en español", caja: "Tipo cushion en tono acero", brazalete: "Metálico integrado", cristal: "Acrílico", estilo: "Vintage", estado: "Usado / vintage" },
+img: "Citizen/4994829429909425632.jpg",
+video: "Citizen/Movimiento.mp4",
+images: [
+"Citizen/4994829429909425636.jpg",
+"Citizen/4994829429909425634.jpg",
+"Citizen/4994829429909425633.jpg",
+"Citizen/4994829429909425635.jpg"
+]
+},
+{
+id: 4,
+name: "Citizen Cronógrafo Automático Bullhead Vintage",
+collection: "Citizen Vintage",
+price: "400",
+description: "Reloj Citizen cronógrafo automático vintage con diseño bullhead, esfera tipo panda en tono blanco con subesferas negras y detalles en amarillo. Cuenta con función de cronógrafo, calendario de día y fecha, escala taquimétrica y brazalete metálico integrado. Una pieza clásica y llamativa para coleccionistas de relojes japoneses vintage.",
+specs: { marca: "Citizen", modelo: "Cronógrafo Bullhead", movimiento: "Automático", joyas: "23 joyas", funciones: "Cronógrafo, día y fecha", esfera: "Blanca tipo panda con subesferas negras", detalles_esfera: "Aguja del cronógrafo y detalles en tono amarillo", calendario: "Día y fecha con indicador en español", escala: "Taquímetro", caja: "Acero inoxidable tipo bullhead", pulsadores: "Superiores estilo bullhead", corona: "Superior", brazalete: "Metálico integrado", cristal: "Acrílico", estilo: "Vintage deportivo", estado: "Usado / vintage" },
+img: "BullHead/4994829429909425641.jpg",
+video: "BullHead/Movimiento.mp4",
+images: [
+"BullHead/4994829429909425643.jpg",
+"BullHead/4994829429909425640.jpg",
+"BullHead/4994829429909425642.jpg"
+]
+},
+{
+id: 5,
+name: "Girard-Perregaux Automático Date Vintage",
+collection: "Girard-Perregaux Vintage",
+price: "300",
+description: "Reloj Girard-Perregaux automático vintage con calendario de fecha, esfera champagne con pátina natural y diseño clásico de vestir. Una pieza elegante y sobria, ideal para coleccionistas que buscan un reloj suizo vintage con presencia refinada.",
+specs: { marca: "Girard-Perregaux", modelo: "Automático Date", movimiento: "Automático", funciones: "Hora, minutos, segundos y fecha", esfera: "Champagne con pátina vintage", indices: "Aplicados tipo bastón", agujas: "Tipo bastón en tono oscuro", calendario: "Fecha a las 3 en punto", caja: "Acero inoxidable", cristal: "Acrílico", correa: "Cuero negro", estilo: "Vintage de vestir", estado: "Usado / vintage" },
+img: "GirardPerregaux/4994829429909425648.jpg",
+video: "GirardPerregaux/Movimiento.mp4",
+images: [
+"GirardPerregaux/4994829429909425647.jpg",
+"GirardPerregaux/4994829429909425645.jpg",
+"GirardPerregaux/4994829429909425646.jpg"
+]
+},
+{
+id: 6,
+name: "Orient Automático Tristar Day-Date Vintage",
+collection: "Orient Vintage",
+price: "100",
+description: "Reloj Orient automático vintage con esfera azul, calendario de día y fecha, y clásico diseño Tristar de 3 estrellas. Una pieza elegante de estilo retro, con caja en acero, brazalete metálico y detalles dorados en índices y agujas. Ideal para amantes de los relojes japoneses vintage.",
+specs: { marca: "Orient", modelo: "Tristar / 3 Stars", movimiento: "Automático", joyas: "21 joyas", funciones: "Hora, minutos, segundos, día y fecha", esfera: "Azul", indices: "Aplicados en tono dorado", agujas: "Doradas", calendario: "Día y fecha a las 3 en punto", idioma_calendario: "Español", caja: "Acero inoxidable", cristal: "Acrílico", brazalete: "Metálico tipo jubilee", estilo: "Vintage clásico", estado: "Usado / vintage" },
+img: "Orient/4994829429909425664.jpg",
+video: "Orient/Movimiento.mp4",
+images: [
+"Orient/4994829429909425661.jpg",
+"Orient/4994829429909425663.jpg",
+"Orient/4994829429909425659.jpg",
+"Orient/4994829429909425657.jpg",
+"Orient/4994829429909425656.jpg",
+"Orient/4994829429909425654.jpg",
+"Orient/4994829429909425662.jpg"
+]
+},
+{
+id: 7,
+name: "Rolex Oyster Perpetual Date 1500",
+collection: "Rolex Vintage",
+price: "3000",
+description: "Reloj Rolex Oyster Perpetual Date referencia 1500, una pieza vintage clásica y elegante con esfera plateada, calendario de fecha con lupa Cyclops y certificación de cronómetro superlativo. Su diseño atemporal en acero inoxidable lo convierte en un modelo ideal para coleccionistas y amantes de Rolex vintage.",
+specs: { marca: "Rolex",
+    modelo: "Oyster Perpetual Date",
+    referencia: "1500",
+    movimiento: "Automático",
+    funciones: "Hora, minutos, segundos y fecha",
+    esfera: "Plateada",
+    indices: "Aplicados tipo bastón",
+    agujas: "Tipo bastón en tono acero",
+    calendario: "Fecha a las 3 en punto",
+    lupa: "Cyclops sobre la fecha",
+    caja: "Acero inoxidable",
+    cristal: "Acrílico con lupa Cyclops",
+    corona: "Firmada Rolex",
+    brazalete: "Metálico tipo Oyster",
+    estilo: "Vintage clásico",
+    estado: "Usado / vintage",
+ },
+img: "Rolex1500/5044441911405513911.jpg",
+video: "Rolex1500/IMG_1430.MOV",
+images: [
+"Rolex1500/5044441911405513913.jpg",
+"Rolex1500/5044441911405513910.jpg",
+"Rolex1500/5044441911405513909.jpg",
+"Rolex1500/5044441911405513908.jpg",
+"Rolex1500/5044441911405513907.jpg",
+"Rolex1500/5044441911405513912.jpg",
+]
+},
+{
+id: 8,
+name: "Seiko Bruce Lee",
+collection: "Seiko Vintage",
+price: "200",
+description: "Seiko “Bruce Lee”, cronógrafo automático vintage. Este modelo recibe su apodo porque el actor Bruce Lee llegó a usar un Seiko similar en algunas ocasiones. La pieza conserva sus componentes originales y correctos para el modelo, sin restaurar, sin pulir y sin piezas aftermarket, excepto la correa. Destaca por su esfera amarilla, caja en excelente estado y calendario en español . Una pieza icónica de Seiko vintage, muy buscada por coleccionistas.",
+specs: { marca: "Seiko", movimiento: "Automático", funciones: "Cronógrafo, día y fecha", esfera: "Amarilla", calendario: "Día y fecha en español", cristal: "Mineral", caja: "Acero inoxidable sin pulir", reserva: "Aproximadamente 30 horas reales", accesorios: "Viene con su correa de acero original", 
+    
+ },
+img: "SeikoBruce/5044441911405513921.jpg",
+video: "SeikoBruce/IMG_1430.MOV",
+images: [
+"SeikoBruce/5044441911405513920.jpg",
+"SeikoBruce/5044441911405513918.jpg",
+"SeikoBruce/5044441911405513916.jpg",
+"SeikoBruce/5044441911405513917.jpg",
+"SeikoBruce/5044441911405513919.jpg",
+]
+},
+{
+id: 9,
+name: "Delbana Tank",
+collection: "Delbana Vintage",
+price: "100",
+description: "Reloj Delbana vintage con diseño tipo Tank, caja rectangular/tonneau en tono acero, esfera blanca con numerales romanos y correa de cuero negra. Una pieza clásica de inspiración elegante, ideal para quienes buscan un reloj suizo vintage de vestir con estética refinada y atemporal.",
+specs: { marca: "Delbana",
+    modelo: "Tank / Rectangular",
+    funciones: "Hora y minutos",
+    esfera: "Blanca",
+    indices: "Numerales romanos",
+    agujas: "Negras",
+    caja: "Rectangular / tonneau en tono acero",
+    corona: "Firmada / con cabujón por confirmar",
+    correa: "Cuero negro",
+    estilo: "Vintage de vestir",
+    origen: "Suizo",
+    estado: "Usado / vintage",
+    
+ },
+img: "DelbanaTank/5044441911405513933.jpg",
+images: [
+"DelbanaTank/5044441911405513936.jpg",
+"DelbanaTank/5044441911405513934.jpg",
+"DelbanaTank/5044441911405513935.jpg",
+]
+},
+];
+
+// FUNCION CONTROLADORA DEL MENÚ LATERAL
+function toggleMenu(open) {
+    const sideMenu = document.getElementById('sideMenu');
+    const overlay = document.getElementById('menuOverlay');
+    if (open) {
+        overlay.classList.remove('hidden');
+        setTimeout(() => {
+            overlay.classList.add('opacity-100');
+            sideMenu.classList.remove('translate-x-full');
+        }, 10);
+    } else {
+        sideMenu.classList.add('translate-x-full');
+        overlay.classList.remove('opacity-100');
+        setTimeout(() => {
+            overlay.classList.add('hidden');
+        }, 300);
+    }
+}
+
+function navigateTo(page, id = null, isPopState = false) {
+    window.scrollTo(0, 0);
+    if (!isPopState) {
+        const state = { page: page, id: id };
+        history.pushState(state, '', `#${page}` + (id ? `-${id}` : ''));
+    }
+    if (page === 'home') {
+        renderHome();
+    } else if (page === 'catalog') {
+        renderCatalog();
+    } else if (page === 'detail' && id) {
+        renderDetail(Number(id));
+    } else if (page === 'about') {
+        renderAbout();
+    } else if (page === 'contact') {
+        renderContact();
+    } else if (page === 'warranty') {
+        renderWarranty();
+    } else if (page === 'service') {
+        renderService();
+    } else if (page === 'sell') {
+        renderSell();
+    }
+}
+
+window.addEventListener('popstate', (event) => {
+    if (event.state) {
+        navigateTo(event.state.page, event.state.id, true);
+    } else {
+        navigateTo('home', null, true);
+    }
+});
+
+function renderHome() {
+document.getElementById('content').innerHTML = `
+<section class="relative h-[85vh] flex items-center justify-center overflow-hidden animate-reveal">
+<img src="https://images.unsplash.com/photo-1509048191080-d2984bad6ae5?auto=format&fit=crop&q=80&w=2000" class="absolute inset-0 w-full h-full object-cover opacity-50 scale-105" alt="Banner Principal">
+<div class="relative z-10 text-center px-6">
+<span class="text-xs tracking-[0.8em] uppercase mb-6 block text-zinc-400">Milano Relojería</span>
+<h1 class="text-6xl md:text-8xl serif mb-10 leading-tight">Define tu <br><span class="gold-gradient-text italic">Legado.</span></h1>
+<button onclick="navigateTo('catalog')" class="btn-luxury">Ver Colección</button>
+</div>
+<div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center">
+<span class="text-[0.6rem] tracking-widest text-zinc-500 mb-2">SCROLL</span>
+<div class="w-px h-12 bg-gradient-to-b from-gold to transparent"></div>
+</div>
+</section>
+<section class="py-32 container mx-auto px-8">
+<div class="max-w-2xl mx-auto text-center mb-24 animate-reveal">
+<h2 class="text-3xl serif italic mb-6">"El tiempo no se mide en segundos, se mide en momentos que perduran para siempre."</h2>
+<div class="w-12 h-px bg-gold mx-auto"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+${watches.slice(0, 3).map((w, index) => `
+<div class="watch-card p-4 group cursor-pointer animate-reveal" style="animation-delay: ${index * 0.2}s" onclick="navigateTo('detail', ${w.id})">
+<div class="overflow-hidden mb-8 aspect-[4/5] bg-zinc-900">
+<img src="${w.img}" class="w-full h-full object-cover grayscale-[0.5] group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700">
+</div>
+<div class="px-4 pb-4">
+<h4 class="serif text-2xl mb-2">${w.name}</h4>
+<p class="text-gold text-xs tracking-widest uppercase mb-4">${w.collection}</p>
+<div class="flex justify-between items-center border-t border-white/5 pt-4">
+<span class="text-sm font-light text-zinc-400">Consultar Precio</span>
+<span class="text-lg font-semibold">$ ${w.price}</span>
+</div>
+</div>
+</div>
+`).join('')}
+</div>
+</section>
+`;
+}
+
+function filterWatches() {
+const searchTerm = document.getElementById('watchSearch').value.toLowerCase();
+const filtered = watches.filter(w => w.name.toLowerCase().includes(searchTerm) || w.collection.toLowerCase().includes(searchTerm));
+const grid = document.getElementById('watchGrid');
+if (filtered.length === 0) {
+grid.innerHTML = `
+<div class="col-span-full py-20 text-center animate-reveal">
+<p class="text-zinc-500 serif text-xl italic">No se han encontrado piezas que coincidan con su búsqueda.</p>
+</div>
+`;
+return;
+}
+grid.innerHTML = filtered.map(w => `
+<div class="watch-card p-6 group cursor-pointer animate-reveal" onclick="navigateTo('detail', ${w.id})">
+<div class="overflow-hidden mb-6 bg-zinc-900 aspect-square">
+<img src="${w.img}" class="w-full h-full object-cover group-hover:opacity-60 transition-all">
+</div>
+<h3 class="serif text-xl mb-1">${w.name}</h3>
+<p class="text-zinc-500 text-[0.6rem] tracking-widest uppercase mb-4">${w.collection}</p>
+<div class="flex justify-between items-center mt-6">
+<span class="text-gold font-bold text-sm">$ ${w.price}</span>
+<span class="text-[0.6rem] border-b border-gold/40 pb-1 tracking-widest">DETALLES</span>
+</div>
+</div>
+`).join('');
+}
+
+function renderCatalog() {
+document.getElementById('content').innerHTML = `
+<div class="container mx-auto px-8 py-20 animate-reveal">
+<header class="mb-12 text-center">
+<span class="text-gold text-xs tracking-[0.5em] uppercase mb-4 block">Boutique</span>
+<h2 class="text-5xl serif mb-10">Nuestra Colección</h2>
+<div class="search-container">
+<input type="text" id="watchSearch" class="search-input" placeholder="BUSCAR POR MODELO O COLECCIÓN..." oninput="filterWatches()">
+<span class="search-icon">
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+</span>
+</div>
+</header>
+<div id="watchGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+${watches.map(w => `
+<div class="watch-card p-6 group cursor-pointer animate-reveal" onclick="navigateTo('detail', ${w.id})">
+<div class="overflow-hidden mb-6 bg-zinc-900 aspect-square">
+<img src="${w.img}" class="w-full h-full object-cover group-hover:opacity-60 transition-all">
+</div>
+<h3 class="serif text-xl mb-1">${w.name}</h3>
+<p class="text-zinc-500 text-[0.6rem] tracking-widest uppercase mb-4">${w.collection}</p>
+<div class="flex justify-between items-center mt-6">
+<span class="text-gold font-bold text-sm">$ ${w.price}</span>
+<span class="text-[0.6rem] border-b border-gold/40 pb-1 tracking-widest">DETALLES</span>
+</div>
+</div>
+`).join('')}
+</div>
+</div>
+`;
+}
+
+function renderAbout() {
+document.getElementById('content').innerHTML = `
+<section class="container mx-auto px-8 py-20 animate-reveal">
+<div class="max-w-4xl mx-auto">
+<header class="text-center mb-16">
+<span class="text-gold text-xs tracking-[0.5em] uppercase mb-4 block">Nuestra Historia</span>
+<h2 class="text-5xl serif mb-8">El Arte del Detalle</h2>
+<div class="w-16 h-px bg-gold mx-auto"></div>
+</header>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+<div class="watch-card p-2 aspect-[3/4]">
+<img src="https://images.unsplash.com/photo-1518131681594-3a991ed41ba4?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover opacity-80" alt="Relojería Artesanal">
+</div>
+<div class="space-y-8">
+<p class="text-zinc-300 text-lg leading-relaxed font-light italic"> "Este emprendimiento nació de la pasión por los relojes y el detalle. Desde el primer día, el objetivo fue ofrecer modelos que realmente valgan la pena, tanto en calidad como en design." </p>
+<div class="space-y-6 text-zinc-400 text-sm leading-loose tracking-wide">
+<p> Cada reloj que ves acá fue seleccionado personalmente, buscando siempre buena presencia, durabilidad y un precio justo. No vendemos simples accesorios, ofrecemos piezas que cuentan una historia y definen un estilo. </p>
+<p> Creemos en la <strong>atención directa y sin vueltas</strong>. Entendemos que elegir un reloj es una decisión personal y por eso el trato es uno a uno. </p>
+</div>
+<div class="pt-8">
+<h4 class="gold-gradient-text serif text-xl mb-4 italic">¿Hablamos?</h4>
+<p class="text-zinc-500 text-xs tracking-widest uppercase mb-6">Atención personalizada vía WhatsApp</p>
+<a href="https://wa.me/3764378004" target="_blank" class="btn-luxury inline-block text-center"> CONTACTAR DIRECTO </a>
+</div>
+</div>
+</div>
+</div>
+</section>
+`;
+}
+
+function renderContact() {
+document.getElementById('content').innerHTML = `
+<section class="container mx-auto px-8 py-20 animate-reveal">
+<div class="max-w-5xl mx-auto">
+<header class="text-center mb-20">
+<span class="text-gold text-xs tracking-[0.5em] uppercase mb-4 block">Contacto Especializado</span>
+<h2 class="text-5xl serif mb-6">Estamos a su Servicio</h2>
+<p class="text-zinc-500 font-light tracking-widest uppercase text-[0.6rem]">Posadas, Misiones Envíos a todo el país</p>
+</header>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+<div class="lg:col-span-1 space-y-8">
+<div class="watch-card p-8 border-l-2 border-l-gold">
+<h4 class="text-gold text-xs tracking-widest uppercase mb-4 font-semibold">Atención Personalizada</h4>
+<p class="text-zinc-400 text-sm leading-relaxed mb-6"> Resolvemos tus dudas sobre movimientos, materiales o disponibilidad de piezas limitadas de forma inmediata. </p>
+<div class="space-y-4">
+<div class="flex items-center group cursor-pointer">
+<span class="text-gold mr-4">
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+</span>
+<span class="text-zinc-300 text-sm font-light">3764-378004</span>
+</div>
+<div class="flex items-center">
+<span class="text-gold mr-4">
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+</span>
+<span class="text-zinc-300 text-sm font-light">Lun - Sáb: 09:00 - 20:00</span>
+</div>
+</div>
+</div>
+</div>
+<div class="lg:col-span-2">
+<div class="watch-card p-10 h-full flex flex-col justify-center items-center text-center">
+<div class="mb-8">
+<div class="w-16 h-16 bg-zinc-900 border border-gold/30 rounded-full flex items-center justify-center mx-auto mb-4">
+<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#c5a059" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+</div>
+<h3 class="serif text-3xl mb-4 italic">Asesoría por WhatsApp</h3>
+<p class="text-zinc-500 text-sm max-w-md mx-auto mb-8 font-light"> Haga clic en el botón de abajo para iniciar una conversación directa con nuestro especialista en alta relojería. </p>
+<a href="https://wa.me/3764378004" target="_blank" class="btn-luxury inline-block bg-gold text-black hover:bg-transparent hover:text-white"> INICIAR CONVERSACIÓN </a>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-20 flex justify-center space-x-12 opacity-50">
+<a href="https://www.instagram.com/milanorelojes7/" class="nav-link !text-[0.6rem]">Instagram</a>
+<a href="https://www.facebook.com/juan.milan.977802/" class="nav-link !text-[0.6rem]">Facebook</a>
+<a href="https://www.tiktok.com/@juanmilano8?lang=es" class="nav-link !text-[0.6rem]">TikTok</a>
+</div>
+</div>
+</section>
+`;
+}
+
+function renderWarranty() {
+document.getElementById('content').innerHTML = `
+<section class="container mx-auto px-8 py-20 animate-reveal">
+<div class="max-w-4xl mx-auto">
+<header class="text-center mb-16">
+<span class="text-gold text-xs tracking-[0.5em] uppercase mb-4 block">Compromiso Milano</span>
+<h2 class="text-5xl serif mb-8">Garantía de Confianza</h2>
+<div class="w-16 h-px bg-gold mx-auto"></div>
+</header>
+<div class="watch-card p-10 md:p-16 space-y-10">
+<div class="border-b border-zinc-800 pb-8">
+<h3 class="serif text-2xl text-gold mb-4 italic">Cobertura Mecánica</h3>
+<p class="text-zinc-300 leading-relaxed font-light text-lg"> "Todos nuestros relojes cuentan con una <strong>garantía mecánica de 1 año</strong> sin costo adicional. Esta garantía cubre cualquier falla de funcionamiento originada por defectos internos del reloj." </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+<div>
+<h4 class="text-xs tracking-widest uppercase text-zinc-500 mb-4 font-bold">¿Qué incluye?</h4>
+<ul class="space-y-3 text-zinc-400 text-sm font-light">
+<li class="flex items-start"><span class="text-gold mr-2">•</span> Defectos de fabricación en el movimiento.</li>
+<li class="flex items-start"><span class="text-gold mr-2">•</span> Desajustes prematuros de la maquinaria.</li>
+<li class="flex items-start"><span class="text-gold mr-2">•</span> Problemas de precisión fuera de los rangos normales.</li>
+</ul>
+</div>
+<div>
+<h4 class="text-xs tracking-widest uppercase text-zinc-500 mb-4 font-bold">Exclusiones</h4>
+<ul class="space-y-3 text-zinc-400 text-sm font-light">
+<li class="flex items-start"><span class="text-red-900 mr-2">•</span> Caídas, golpes o impactos accidentales.</li>
+<li class="flex items-start"><span class="text-red-900 mr-2">•</span> Mal uso o manipulación por terceros.</li>
+<li class="flex items-start"><span class="text-red-900 mr-2">•</span> Contacto indebido con agua o vapor.</li>
+</ul>
+</div>
+</div>
+<div class="mt-12 p-8 border border-gold/20 bg-zinc-900/30 text-center">
+<h4 class="serif text-xl mb-4 italic">¿Tenés algún inconveniente con tu pieza?</h4>
+<p class="text-zinc-500 text-sm mb-8 font-light"> Si tu reloj presenta alguna falla mecánica dentro del año de cobertura, contactanos inmediatamente. </p>
+<a href="https://wa.me/3764378004?text=Hola! Necesito asistencia técnica por un inconveniente con mi reloj (Garantía)." target="_blank" class="btn-luxury inline-flex items-center gap-4 bg-transparent border-red-900/50 hover:bg-red-900/10"> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg> SOLICITAR SERVICIO TÉCNICO </a>
+</div>
+<div class="text-center pt-4">
+<p class="text-[0.6rem] text-zinc-600 uppercase tracking-[0.3em]">Importante: El servicio técnico se gestiona de forma personalizada.</p>
+</div>
+</div>
+</div>
+</section>
+`;
+}
+
+function renderService() {
+document.getElementById('content').innerHTML = `
+<section class="container mx-auto px-8 py-20 animate-reveal">
+<div class="max-w-4xl mx-auto">
+<header class="text-center mb-16">
+<span class="text-gold text-xs tracking-[0.5em] uppercase mb-4 block">Mantenimiento y Reparación</span>
+<h2 class="text-5xl serif mb-8">Servicio Técnico Especializado</h2>
+<div class="w-16 h-px bg-gold mx-auto"></div>
+</header>
+<div class="watch-card p-10 md:p-16 space-y-12">
+<div class="text-center max-w-2xl mx-auto">
+<p class="text-zinc-300 leading-relaxed font-light text-lg italic">
+"Mantener una pieza de tiempo requiere precisión y conocimiento. En Milano nos encargamos de que tu reloj vuelva a latir con la exactitud del primer día."
+</p>
+</div>
+<div class="border-t border-zinc-800 pt-8 space-y-6">
+<h4 class="text-xs tracking-widest uppercase text-gold font-bold">¿Cómo trabajamos?</h4>
+<p class="text-zinc-400 text-sm leading-loose font-light">
+Cada reloj presenta un desgaste, problema o necesidad única. Por este motivo, **no manejamos tarifas fijas**. Para brindarte un diagnóstico preciso, requerimos evaluar las condiciones específicas de tu pieza para confeccionar un **presupuesto totalmente personalizado**.
+</p>
+<div class="bg-zinc-900/40 p-6 border border-white/5 rounded-sm space-y-4">
+<h5 class="text-white text-xs tracking-wider uppercase font-semibold">¿Qué necesitamos que nos envíes?</h5>
+<ul class="space-y-3 text-zinc-400 text-sm font-light">
+<li class="flex items-start"><span class="text-gold mr-3">1.</span> Marca y modelo exacto de la pieza.</li>
+<li class="flex items-start"><span class="text-gold mr-3">2.</span> Fotos nítidas del estado general del reloj (frente, dorso y corona).</li>
+<li class="flex items-start"><span class="text-gold mr-3">3.</span> Detalle o descripción del problema o mantenimiento que requiera (limpieza, calibración, cambio de cristal, etc).</li>
+</ul>
+</div>
+</div>
+<div class="pt-6 text-center">
+<a href="https://wa.me/3764378004?text=Hola! Me gustaría solicitar un presupuesto para el servicio/reparación de un reloj. Adjunto los detalles de mi pieza." target="_blank" class="btn-luxury"> SOLICITAR PRESUPUESTO </a>
+</div>
+</div>
+</div>
+</section>
+`;
+}
+
+function renderSell() {
+document.getElementById('content').innerHTML = `
+<section class="container mx-auto px-8 py-20 animate-reveal">
+<div class="max-w-4xl mx-auto">
+<header class="text-center mb-16">
+<span class="text-gold text-xs tracking-[0.5em] uppercase mb-4 block">Adquisiciones</span>
+<h2 class="text-5xl serif mb-8">Compramos tu Reloj</h2>
+<div class="w-16 h-px bg-gold mx-auto"></div>
+</header>
+<div class="watch-card p-10 md:p-16 space-y-12">
+<div class="text-center max-w-2xl mx-auto">
+<p class="text-zinc-300 leading-relaxed font-light text-lg italic">
+"Si buscas desprenderte de una pieza de tu colección, en Milano te ofrecemos una tasación transparente y un proceso de compra directo."
+</p>
+</div>
+<div class="border-t border-zinc-800 pt-8 space-y-6">
+<h4 class="text-xs tracking-widest uppercase text-gold font-bold">Criterios de Evaluación</h4>
+<p class="text-zinc-400 text-sm leading-loose font-light">
+Estamos constantemente en la búsqueda de incorporar nuevas piezas a nuestro catálogo, con un enfoque especial en **modelos vintage, mecánicos, automáticos y de marcas reconocidas**. Evaluamos minuciosamente la autenticidad, el estado de conservación de la maquinaria, la originalidad de sus componentes externos y si conserva su estuche o documentación de fábrica.
+</p>
+<div class="bg-zinc-900/40 p-6 border border-white/5 rounded-sm space-y-4">
+<h5 class="text-white text-xs tracking-wider uppercase font-semibold">Para una cotización inicial, facilítanos:</h5>
+<ul class="space-y-3 text-zinc-400 text-sm font-light">
+<li class="flex items-start"><span class="text-gold mr-3">•</span> Fotografías macro de alta calidad de la esfera, tapa trasera y calibre (si es posible).</li>
+<li class="flex items-start"><span class="text-gold mr-3">•</span> Breve reseña del estado de funcionamiento actual de la pieza.</li>
+<li class="flex items-start"><span class="text-gold mr-3">•</span> El valor pretendido o estimado de venta.</li>
+</ul>
+</div>
+</div>
+<div class="pt-6 text-center">
+<a href="https://wa.me/3764378004?text=Hola! Me pongo en contacto porque estoy interesado en vender un reloj de mi colección. Deseo recibir una tasación inicial." target="_blank" class="btn-luxury"> ENVIAR PIEZA PARA TASACIÓN </a>
+</div>
+</div>
+</div>
+</section>
+`;
+}
+
+function renderDetail(id) {
+const watch = watches.find(w => w.id === id);
+if(!watch) return;
+document.getElementById('content').innerHTML = `
+<div class="container mx-auto px-8 py-16 animate-reveal">
+<button class="text-xs tracking-widest text-zinc-500 mb-12 hover:text-gold transition-colors flex items-center" onclick="navigateTo('catalog')">
+<span class="mr-2 text-lg">←</span> VOLVER A LA COLECCIÓN
+</button>
+<div class="flex flex-col lg:flex-row gap-20">
+<div class="lg:w-1/2">
+<div class="watch-card p-2 mb-8">
+<img src="${watch.img}" id="mainLargeImage" class="w-full h-[600px] object-cover" alt="${watch.name}">
+</div>
+<div class="grid grid-cols-3 gap-6">
+${watch.images ? watch.images.map(imgSrc => `
+<div class="watch-card p-1 aspect-square cursor-pointer" onclick="changeMainImage('${imgSrc}')">
+<img src="${imgSrc}" class="w-full h-full object-cover">
+</div>
+`).join('') : ''}
+</div>
+<div class="mt-16">
+<h4 class="text-xs tracking-[0.4em] uppercase text-gold mb-6">Mecanismo en movimiento</h4>
+<div class="watch-card p-1 overflow-hidden">
+<video controls autoplay muted loop class="w-full transition-all duration-1000">
+<source src="${watch.video}" type="video/mp4">
+</video>
+</div>
+</div>
+</div>
+<div class="lg:w-1/2 space-y-10">
+<div>
+<span class="text-gold text-xs tracking-[0.4em] uppercase mb-4 block">${watch.collection}</span>
+<h2 class="text-6xl serif mb-6">${watch.name}</h2>
+<div class="flex items-center gap-6 mb-8">
+<span class="text-3xl font-light">$ ${watch.price}</span>
+<span class="px-3 py-1 border border-zinc-800 text-[0.6rem] tracking-tighter text-zinc-500 uppercase">Disponibilidad Inmediata</span>
+</div>
+<p class="text-zinc-400 leading-loose font-light text-lg"> ${watch.description} </p>
+</div>
+<div class="space-y-6">
+<h4 class="text-xs tracking-widest uppercase text-zinc-500 border-b border-zinc-800 pb-4 font-bold">Especificaciones Técnicas</h4>
+<div class="grid grid-cols-2 gap-y-6 gap-x-12">
+${Object.entries(watch.specs).map(([key, value]) => `
+<div>
+<p class="text-[0.6rem] text-zinc-600 uppercase tracking-widest mb-1">${key}</p>
+<p class="text-sm text-zinc-300 font-light">${value}</p>
+</div>
+`).join('')}
+</div>
+</div>
+<div class="pt-10 flex flex-col sm:flex-row gap-6">
+<a href="https://wa.me/3764378004?text=Hola! Me interesa el modelo ${watch.name} de la colección ${watch.collection}." target="_blank" class="btn-luxury text-center flex-1"> ADQUIRIR PIEZA</a>
+<button onclick="navigateTo('catalog')" class="px-8 py-4 border border-zinc-800 text-xs tracking-widest hover:bg-zinc-900 transition-all uppercase"> Explorar otros </button>
+</div>
+</div>
+</div>
+</div>
+`;
+}
+
+function changeMainImage(src) {
+const mainImg = document.getElementById('mainLargeImage');
+if (mainImg) {
+mainImg.src = src;
+}
+}
+
+window.onload = () => {
+    const hash = window.location.hash;
+    if (hash) {
+        if (hash.startsWith('#detail-')) {
+            const id = hash.replace('#detail-', '');
+            navigateTo('detail', id, true);
+        } else {
+            navigateTo(hash.replace('#', ''), null, true);
+        }
+    } else {
+        navigateTo('home', null, true);
+    }
+};
+</script>
+</body>
+</html>
